@@ -25,7 +25,19 @@ def predict_next_word(model,vectorizer,text,max_sequence_len):
     return None
 
 ## streamlit app
-st.title('Next Word Prediction with LSTM')
+
+st.set_page_config(page_title="LSTM Next Word Predictor", page_icon="🧠")
+
+st.markdown(
+    "<h1 style='text-align: center; color: #4B8BBE;'>🧠 Hamlet LSTM Word Predictor</h1>",
+    unsafe_allow_html=True,
+)
+
+st.markdown(
+    "This app predicts the <b>next most probable word</b> using a trained LSTM model on Shakespeare's <i>Hamlet</i>. Try it by typing a phrase below!",
+    unsafe_allow_html=True
+)
+
 input_text=st.text_input("Enter the sequence of words","To be or not to be")
 if st.button("Predict Next Word"):
     max_sequence_len=model.input_shape[1]+1
