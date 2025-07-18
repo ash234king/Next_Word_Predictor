@@ -14,8 +14,8 @@ The app is **Dockerized** for reproducibility and includes a **CI/CD pipeline vi
 
 ## 🚀 Live Links
 
-- 🌐 **Streamlit App**: [👉 Try it here](https://your-streamlit-app-link.com)
-- 🐋 **DockerHub**: [👉 Docker Image] https://hub.docker.com/r/yash43256/next-word-predictor
+- 🌐 **Streamlit App**: [👉 Web App here](https://nextwordpredictor-6wsy9nzhjfdvon6kkz7xjn.streamlit.app/)
+- 🐋 **DockerHub**: [👉 Docker Image](https://hub.docker.com/r/yash43256/next-word-predictor)
 
 ---
 
@@ -95,7 +95,7 @@ streamlit run app.py
    - Dropout
    - LSTM (100 units)
    - Dense output with softmax over vocab
-5. **Training** – Trained for 140 epochs for ~60% validation accuracy.
+5. **Training** – Trained for 100 epochs for ~60% validation accuracy.
 6. **Prediction** – `prediction function` defined in app.py only which processes user input and predicts next word.
 7. **Streamlit UI** – `app.py` creates a simple UI to interact with the model.
 8. **Docker** – All dependencies are containerized.
@@ -106,7 +106,7 @@ streamlit run app.py
 ## 📝 Note on Design Decisions
 
 > ⚠️ **Important Note**  
-> During experimentation, we tried techniques like `TopKCategoricalSampling`,`labelsmoothening` and `ReduceLROnPlateau`.  
+> During experimentation, we tried techniques like `TopKCategoricalSampling`,`labelsmoothening`,`EarlyStopping` and `ReduceLROnPlateau`.  
 > However, we **chose not to include them** in the final model for the following reasons:
 > 
 > - **TopKCategoricalSampling**: This method introduced randomness into predictions and often resulted in words that **did not match the sentence context**, reducing the Shakespearean fluency.
@@ -153,6 +153,6 @@ This project is released under the MIT License. Feel free to use, modify, or sha
 
 **Yashvardhan Singh**  
 🎓 B.Tech Mechanical @ IIT Goa  
-🔗 [LinkedIn] https://www.linkedin.com/in/yashvardhan-singh-26158028a/ 
-💻 [GitHub] https://github.com/ash234king
+🔗 [LinkedIn](https://www.linkedin.com/in/yashvardhan-singh-26158028a/)
+💻 [GitHub](https://github.com/ash234king)
 
