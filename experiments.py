@@ -5,7 +5,7 @@ import pickle
 
 from nltk.corpus import gutenberg
 import pandas as pd
-
+import datetime
 '''
 ## load the dataset
 data=gutenberg.raw('shakespeare-hamlet.txt')
@@ -34,7 +34,7 @@ with open('data/hamlet.txt','r') as file:
 
 text_ds=tf.data.Dataset.from_tensor_slices([text])
 vectorizer=TextVectorization(
-    max_tokens=10000,
+    max_tokens=5000,
     output_mode='int',
     standardize='lower_and_strip_punctuation',
     split='whitespace'
@@ -83,7 +83,7 @@ x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2)
 ## train our lstm rnn
 
 from keras.models import Sequential
-from keras.layers import Embedding,LSTM,Dense,Dropout
+from keras.layers import Embedding,LSTM,Dense,Dropout,SpatialDropout1D
 
 model=Sequential()
 model.add(Input(shape=(max_sequence_len-1,)))
@@ -94,19 +94,26 @@ model.add(LSTM(100))
 model.add(Dense(total_words,activation='softmax'))
 
 ## compile the model
-from keras.callbacks import EarlyStopping
-early_stopping=EarlyStopping(monitor='val_loss',patience=35,restore_best_weights=True)
-model.compile(loss='categorical_crossentropy',optimizer='adam',metrics=['accuracy'])
+from keras.callbacks import EarlyStopping,TensorBoard,ReduceLROnPlateau
+log_dir="logs/fit/"+datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+tensorboard_callback=TensorBoard(log_dir=log_dir,histogram_freq=1)
+
+from keras.losses import CategoricalCrossentropy
+from keras.metrics import TopKCategoricalAccuracy
+early_stopping=EarlyStopping(monitor='val_loss',patience=25,restore_best_weights=True)
+model.compile(loss=CategoricalCrossentropy(),optimizer='adam',metrics=['accuracy'])
+
 
 model.summary()
 ## training of model
-
-history=model.fit(x_train,y_train,epochs=75,validation_data=(x_test,y_test),verbose=1)
+## avoided early stopping intentionally so that to make grammatical sense
+## as after trying the the grammatical sense was not there
+history=model.fit(x_train,y_train,epochs=100,validation_data=(x_test,y_test),verbose=1,callbacks=[tensorboard_callback])
 
 model.save("models/lstm_model.keras")
 
 loss,accuracy=model.evaluate(x_test,y_test)
-print("accuracy",accuracy)  ## 54.77 % accurate
+print("accuracy",accuracy) 
 
 vectorizer_model=Sequential([vectorizer])
 vectorizer_model(tf.constant(["hello world"]))
